@@ -1,0 +1,28 @@
+{
+    "name": "webpack-js-portfolio",
+    "version": "1.0.0",
+    "description": "A minimal portfolio with Vanilla JavaScript and webpack",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/JUANLUNABLANCO/webpack-js-portfolio.git"
+    },
+    "keywords": [
+        "javascript",
+        "html",
+        "css"
+    ],
+    "author": "Juan Luna <desarrolloaplicacionesweb.jmlb@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/JANLUNABLANCO/webpack-js-portfolio/issues"
+    },
+    "homepage": "https://github.com/JUANLUNABLANCO/webpack-js-portfolio#readme",
+    "devDependencies": {
+        "webpack": "^5.75.0",
+        "webpack-cli": "^5.0.1"
+    }
+}
