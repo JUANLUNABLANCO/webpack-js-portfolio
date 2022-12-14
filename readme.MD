@@ -583,15 +583,7 @@ otra forma sería en el package.json agregar esto al script --watch
 --- ---
 
 
-## Despliegue en producción con Netlify
-
-se crea el archivo netlify.toml, con el siguiente contenido
-
---- netlify.toml ---
-[build]
-  publish = "dist"
-  command = "npm run build" 
---- ---
+## Emojis en los commits
 
 podemos instalar gitmoji para los commits de git que da mejor sensación visual a los mensajes de git
 
@@ -691,3 +683,49 @@ para verlos puedes acudir a su web o excribir en consola
 
 ahí los tienes todos
 
+
+## Automatic Netlify Deploiment and Create .env variables in server
+
+Lo primero que debemos hacer es crear una cuenta en Netlify. Lo siguiente es crear un archivo en la raíz del proyecto llamado netlify.toml el cual va a llevar la siguiente configuración:
+
+## **netlify.toml**
+[build]
+    publish = "dist" // ¿cual va a ser la carpeta a publicar?
+    command = "npm run build" // Comando a ejecutar para el deploy
+
+
+Para el siguiente paso debemos ya tener nuestro repositorio en algún servicio de la nube, como Github. Ahora, vamos a la pagina de Netlify para crear el nuevo sitio.
+
+Crear nuevo sitio → Seleccionar nube (Github) → Elegir repositorio y rama a subir → Deploy
+
+Apartir de ahora Netlify nos levanta el servidor de manera gratuita, este proceso puede ser lento ya que es un servicio gratuito. En el summary de nuestro deploy podemos ver el log del build donde podriamos ver los errores presentes.
+
+En el proyecto actual, al hacer uso de una variable de entorno, necesitamos realizar la siguiente configuración para que Netlify pueda trabajar con ella: Creamos una carpeta llamada scripts/ y adentro de esta carpeta vamos a crear un archivo llamado create-env.js. En este archivo vamos a colocar este código
+
+// **create-env.js**
+
+const fs = require('fs'); // fs = file system
+
+// fs.writeFileSync("path", `argumento a crear`);
+fs.writeFileSync("./.env", `API=${process.env.API}\n`);
+
+Pero ¿de dónde vamos a obtener/setear el process.env? Lo vamos a asignar en netlify, en nuestro deploy vamos a buscar la Sección de Enviroment → Enviroment Variables → Edit Variables. En nuestro caso la llamaremos API y asignaremos el valor de nuestro API: https://randomuser.me/api/
+
+Ahora, debemos ejecutar este script antes de ejecutar el comando de build, para que sea enviado a netlify. Vamos a nuestro package.json y vamos a modificar el script build de la siguiente manera:
+
+"scripts": {
+    ...
+    "build:server": "node ./scripts/create-env.js && npx webpack --config webpack.config.prod.js",
+  }
+
+⚠️Cuidado al anidar la ejecución de scripts, porque si el primero en ejecutarse lo hace como demonio, puede causar un problema ya que no va a ejecutarse el segundo script.
+
+> npm run build:server
+
+⚠️ se ejecuta solo en netlify
+⚠️ si lo ejecutas en local borrará la variable de entorno.
+
+
+
+
+Luego de todos estos cambios debemos empujarlos a la nube ✌🏻
