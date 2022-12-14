@@ -1,3 +1,6 @@
+<a href="https://gitmoji.dev">
+  <img src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square" alt="Gitmoji">
+</a>
 # CURSO DE WEBPACK
 
 ## INICIALIZAR PROYECTO
@@ -580,5 +583,29 @@ otra forma sería en el package.json agregar esto al script --watch
 
 ## Despliegue en producción con Netlify
 
+se crea el archivo netlify.toml, con el siguiente contenido
 
+--- netlify.toml ---
+[build]
+  publish = "dist"
+  command = "npm run build" 
+--- ---
+
+podemos instalar gitmoji para los commits de git que da mejor sensación visual a los mensajes de git
+
+npm i -g gitmoji-cli
+
+luego puedes poner esto en la parte de arriba del RAEDME.md
+<a href="https://gitmoji.dev">
+  <img src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square" alt="Gitmoji">
+</a>
+
+cuando vayas a hacer un commit pon en la línea de comandos esto:
+> gitmoji -i  // para instalar el hook en esa consola
+> git add .
+> git commit
+ 
+ te saldrá un menú y selccionas el emoj ique quieras, para luego poder hacer un push
+
+> push origin <rama>
 
