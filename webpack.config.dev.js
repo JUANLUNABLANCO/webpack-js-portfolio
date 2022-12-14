@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 // const TerserPlugin = require('terser-webpack-plugin');
 const DotEnv = require('dotenv-webpack');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
     entry: './src/index.js',
@@ -13,7 +14,7 @@ module.exports = {
         filename: '[name].[contenthash].js'
     },
     mode: "development",
-    // watch: true,
+    devtool: 'source-map',
     resolve: {
         extensions: ['.js'],
         alias: {
@@ -62,6 +63,13 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'assets/css/[hash].[name].css'
         }),
-        new DotEnv()
-    ]
+        new DotEnv(),
+    ],
+    devServer: {
+        static: path.join(__dirname, 'dist'),
+        compress: true,
+        historyApiFallback: true,
+        port: 8080,
+        open: true
+    }
 }

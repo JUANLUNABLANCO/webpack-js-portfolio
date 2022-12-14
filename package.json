@@ -4,12 +4,14 @@
     "description": "A minimal portfolio with Vanilla JavaScript and webpack",
     "main": "index.js",
     "scripts": {
-        "dev": "npm run clean && npx webpack --config webpack.config.dev.js",
+        "clean": "rimraf ./dist",
         "watch": "npm run dev -- --watch",
+        "dev": "npm run clean && npx webpack --config webpack.config.dev.js",
         "build": "npm run clean && npx webpack --config webpack.config.prod.js",
+        "start:dev": "webpack serve --config webpack.config.dev.js",
         "build:server": "node ./scripts/create-env.js && npx webpack --config webpack.config.prod.js",
-        "clean": "rimraf ./dist"
-
+        "analyzer:json": "npx webpack --profile --json > stats.json",
+        "analyzer:web": "npx webpack-bundle-analyzer stats.json"
     },
     "repository": {
         "type": "git",
@@ -44,6 +46,8 @@
         "terser-webpack-plugin": "^5.3.6",
         "url-loader": "^4.1.1",
         "webpack": "^5.75.0",
-        "webpack-cli": "^5.0.1"
+        "webpack-bundle-analyzer": "^4.7.0",
+        "webpack-cli": "^5.0.1",
+        "webpack-dev-server": "^4.11.1"
     }
 }

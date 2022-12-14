@@ -725,7 +725,89 @@ Ahora, debemos ejecutar este script antes de ejecutar el comando de build, para 
 ⚠️ se ejecuta solo en netlify
 ⚠️ si lo ejecutas en local borrará la variable de entorno.
 
-
-
-
 Luego de todos estos cambios debemos empujarlos a la nube ✌🏻
+
+
+## devServer en modo development
+
+> npm install -D webpack-dev-server
+
+--- webpack.config.dev.js ---
+...
+    devServer: {
+        static: path.join(__dirname, 'dist'),     // que directorio debe mirar
+        compress: true,                           // debe comprimirlo o no
+        historyApiFallback: true,                 // habilita el history del navegador
+        port: 8080,                               // puerto donde se ejecutará
+        open: true                                // lo abre
+    }
+--- ---
+--- package.json ---
+"scripts": {
+        // limpia y crea el dist en modo development
+        "dev": "npm run clean && npx webpack --config webpack.config.dev.js",
+
+        // esta pendiente de cambios cuando ejecute el dev
+        "watch": "npm run dev -- --watch",
+        
+        // servidor local en modo desarrollo,  crea el dist a partir de lo que existe en src y lo sirve, además automáticamente está en modo watch, sobre el src, por tanto los cambios se reflejan automáticamente, es como el nodemon.
+        "start:dev": "npm run dev && webpack serve --config webpack.config.dev.js",
+
+        // construye el dist en modo producción
+        "build": "npm run clean && npx webpack --config webpack.config.prod.js",
+
+        // construye el dist en modo produccion pero solo usarlo en netlify, porque en local borra las variables de .env 
+        "build:server": "node ./scripts/create-env.js && npx webpack --config webpack.config.prod.js",
+
+        // este limpia y es usado antes de crear el dist
+        "clean": "rimraf ./dist"
+    },
+--- ---
+
+
+## Analyzando el proyecto
+
+> npm install webpack-bundle-analyzer -D
+
+--- webpack.config.dev.js ---
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+plugins:[
+  ...
+  new BundleAnalyzerPlugin();
+--- ---
+
+> npx webpack --profile --json > stats.json      // lo arranca y el json del informe lo pasa a ese archivo
+
+para ver el json generado en una web amigable
+> npx webpack-bundle-analyzer stats.json
+
+lo haremos en archivos independientes, por no ensuciar 'dev'
+sino deberíamos introducirlo dentro del archivo de configuración:
+
+  // new BundleAnalyzerPlugin()   // sin configuracion
+  // new BundleAnalyzerPlugin({   // con configuración
+  //     analyzerMode: 'static',  //para que lo haga sólo al momento de hacer el build , posibles valores: 'static' | 'sever' | 'json' | 'disabled'
+  //     openAnalyzer: true,
+  //     analyzerPort: 8888 // por defecto 8888
+  // })
+
+para este cometido hemos habilitado dos scripts que se deben ejecutar uno a continuación del otro, el primero genera un json y el segundo muestra el json en una web
+
+
+## webpack devTools map
+
+--- webpack.config.dev.js ---
+devtool: 'source-map',       // permite generar un mapa del código en formato json
+--- ---
+
+> npm run dev
+
+dentro del dist sería main.<chunk>.js.map 
+gracias al map podsemos servir la app ne development y ver en el navegador, el index.js y acceder a partes del código inentendibles para u nser humano y te indica donde se genera realmente ese código.
+
+
+
+## Instalación y configuración para REACT
+ver el proyecto 03 webpack y react
+
