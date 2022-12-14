@@ -1,0 +1,2 @@
+// alert("esto es un fichero de prueba, no se debería ejecuatr pues no está enlazado en ninguna parte, sin embargo con copy plugin y una llamada al script desde index.html hemos conseguido que se ejecute");
+console.log("esto es un fichero de prueba, no se debería ejecuatr pues no está enlazado en ninguna parte, sin embargo con copy plugin y una llamada al script desde index.html hemos conseguido que se ejecute");
