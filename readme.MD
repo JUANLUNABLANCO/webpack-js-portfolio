@@ -609,3 +609,5 @@ cuando vayas a hacer un commit pon en la línea de comandos esto:
 
 > push origin <rama>
 
+> gitmoji --commit
+
